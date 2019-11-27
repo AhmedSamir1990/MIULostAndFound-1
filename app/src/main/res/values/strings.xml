@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MIU LostAndFound</string>
+    <string name="lostandfound">Lost And Found</string>
+    <string name="miu">MIU</string>
+    <string name="username">MIU mail</string>
+    <string name="password">Password</string>
+    <string name="signin">SignIn</string>
+    <string name="signinhint">Please LogIn Using MIU e-mail</string>
+    <string name="don_t_have_an_account_signup">Don\'t have an account? SignUp</string>
+    <string name="signup">SignUp</string>
+    <string name="have_an_account_signin">Have an account? Login</string>
+    <string name="login">login</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="email_use_your_miu_mail">Email (Use your MIU mail)</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password_at_least_8_characters">Password (at least 8 characters)</string>
+    <string name="re_type_your_password">Re-Type your password</string>
+</resources>

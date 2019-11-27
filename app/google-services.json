@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "637889663959",
+    "firebase_url": "https://miu-lostandfound-4e8d4.firebaseio.com",
+    "project_id": "miu-lostandfound-4e8d4",
+    "storage_bucket": "miu-lostandfound-4e8d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637889663959:android:d9d147f578093b1e23f192",
+        "android_client_info": {
+          "package_name": "com.example.miulostandfound"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637889663959-2ni1rd8mbheff7i4uoge64kvk88md8no.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.miulostandfound",
+            "certificate_hash": "89f4ea836b91d3e23b590ca0dd71a4cda55218da"
+          }
+        },
+        {
+          "client_id": "637889663959-ktbaejpv7d4ignji7dq0s82bns4ea5gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYvZJZ516jE_Eyc2Y7MUtZxz8zPSlxWOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637889663959-ktbaejpv7d4ignji7dq0s82bns4ea5gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
