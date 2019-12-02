@@ -67,8 +67,8 @@ public class Phone extends AppCompatActivity {
             return;
         }
          String PhoneNo = "+20"+personPhone;
-        Intent intent= new Intent(this,Verify.class);
-        intent .putExtra("PhoneNo",PhoneNo);
+//        Intent intent= new Intent(this,Verify.class);
+//        intent .putExtra("PhoneNo",PhoneNo);
         signUp(view);
     }
 

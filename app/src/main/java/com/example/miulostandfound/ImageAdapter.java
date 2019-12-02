@@ -1,5 +1,6 @@
 package com.example.miulostandfound;
 
+
 import android.content.Context;
 import android.nfc.Tag;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     private Context mContext;
     private List<imageData> mUploads;
+    boolean flag = false;
     StorageReference storageReference;
 //    Iterator<DataSnapshot> items = databasetasna
 
@@ -42,13 +44,24 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public void onBindViewHolder(ImageViewHolder holder, int position) {
         imageData uploadCurrent = mUploads.get(position);
         String img = String.valueOf(uploadCurrent.getImageURL());
-        holder.textViewName.setText(uploadCurrent.getImageName());
+        if (uploadCurrent.getIsFound()==flag)
+        {
+            holder.textViewName.setText(uploadCurrent.getImageName());
 //        hna kn fe with(mContext) bs at3'yrt '
 //        Picasso.get().load(uploadCurrent.getImageURL()).fit().centerCrop().into(holder.imageView);
-        Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
-        System.out.println(img);
-        Log.i("Tag",img.toString());
+            Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
+            System.out.println(img);
+            Log.i("Tag",img.toString());
 //        storageReference.child(img.child)
+        }
+        else
+//            holder.textViewName.setText("NO data to show ");
+            System.out.println("No data to show");
+//        Log.i("Tag",img.toString());
+//    Toast.makeText(ImageAdapter.this,"No items to show",Toast.LENGTH_LONG).show();
+//        Toast.makeText(ImageAdapter.this, "Done", Toast.LENGTH_SHORT).show();
+
+
     }
 
     @Override

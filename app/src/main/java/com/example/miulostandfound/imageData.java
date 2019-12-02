@@ -1,16 +1,54 @@
 package com.example.miulostandfound;
+
+import android.widget.EditText;
+
+import com.google.firebase.database.Exclude;
+
 public class imageData {
     public String imageName;
     public String imageURL;
+    public String imageCaption;
+    public boolean isFound;
+    public String FoundAt;
+    public String user;
+
+    public imageData(String imageName, String imageURL, String imageCaption, boolean isFound, String foundAt, String user) {
+        this.imageName = imageName;
+        this.imageURL = imageURL;
+        this.imageCaption = imageCaption;
+        this.isFound = isFound;
+        FoundAt = foundAt;
+        this.user = user;
+    }
 
     public imageData() {
     }
 
-    public String imageCaption;
-    public imageData(String imageName, String imageURL, String imageCaption) {
-        this.imageName = imageName;
-        this.imageURL = imageURL;
-        this.imageCaption = imageCaption;
+    @Exclude
+    public String  getFoundAt() {
+        return FoundAt;
+    }
+    @Exclude
+    public void setFoundAt(String foundAt) {
+        this.FoundAt = foundAt;
+    }
+
+
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public boolean getIsFound() {
+        return isFound;
+    }
+
+    public void setIsFound(boolean isFound) {
+        this.isFound = isFound;
     }
 
     public String getImageName() {

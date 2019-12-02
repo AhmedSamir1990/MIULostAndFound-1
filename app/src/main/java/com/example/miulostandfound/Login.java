@@ -2,8 +2,17 @@ package com.example.miulostandfound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,7 +54,7 @@ public class Login extends AppCompatActivity {
     TextView textView4;
     com.example.miulostandfound.student student;
     Intent intent;
-
+private final String CHANNEL_ID="personal_notifications";
     long maxid = 0;
     GoogleSignInResult result;
     DataSnapshot dataSnapshot;
@@ -224,9 +233,34 @@ public class Login extends AppCompatActivity {
     }
 
 public void goAdd(View view)
+
 {
+    create();
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(Login.this,CHANNEL_ID);
+       builder .setSmallIcon(R.drawable.ic_message);
+       builder .setContentTitle("New Notification");
+       builder.setContentText("Let's add an Image!");
+       builder .setAutoCancel(true);
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    NotificationManagerCompat n = NotificationManagerCompat.from(this);
+    n.notify(001,builder.build());
+
     Intent intent = new Intent(this,Main2Activity.class);
     startActivity(intent);
 
+}
+private void create()
+{
+    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+    {
+        CharSequence name= "Personal Notifications";
+        String descreption = "Include all the personal notifications";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,name,importance);
+        notificationChannel.setDescription(descreption);
+        NotificationManager no = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        no.createNotificationChannel(notificationChannel);
+    }
 }
 }

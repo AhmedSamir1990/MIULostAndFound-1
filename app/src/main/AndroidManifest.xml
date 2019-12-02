@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.miulostandfound">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,11 +11,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".imagesActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".GettingDeviceTokenService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+            </intent-filter>
+        </service>
+
+        <service
+             android:name=".MyFirebaseMessagingService">
+             <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+             </intent-filter>
+        </service>
+
+        <activity android:name=".imagesActivity" />
         <activity android:name=".imageData" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".Verify" />
         <activity android:name=".Phone" />
         <activity
             android:name=".Login"
