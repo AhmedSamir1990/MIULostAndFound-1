@@ -36,7 +36,6 @@ public class Phone extends AppCompatActivity {
         personFamilyName=getIntent().getStringExtra("personFamilyName");
         personEmail=getIntent().getStringExtra("personEmail");
         personId=getIntent().getStringExtra("personId");
-
         student= new com.example.miulostandfound.student();
         reff = FirebaseDatabase.getInstance().getReference().child("student");
         reff.addValueEventListener(new ValueEventListener() {
@@ -67,8 +66,6 @@ public class Phone extends AppCompatActivity {
             return;
         }
          String PhoneNo = "+20"+personPhone;
-//        Intent intent= new Intent(this,Verify.class);
-//        intent .putExtra("PhoneNo",PhoneNo);
         signUp(view);
     }
 
@@ -80,7 +77,15 @@ public class Phone extends AppCompatActivity {
         student.setId(personId.trim());
         student.setNumber("0");
         reff.child(String.valueOf(personId)).setValue(student);
+        goFeed(personEmail);
     }
 
+    public void goFeed(String personEmail)
 
+    {
+        Intent intent = new Intent(this,Main2Activity.class);
+        intent.putExtra("personEmail",personEmail);
+        startActivity(intent);
+
+    }
 }

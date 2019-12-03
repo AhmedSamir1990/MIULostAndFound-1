@@ -43,6 +43,7 @@ public class Main2Activity extends AppCompatActivity {
     EditText ImageName ,ImageCaption,FoundAt;
     Button btn;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    String personEmail;
 
 
     @Override
@@ -54,7 +55,7 @@ public class Main2Activity extends AppCompatActivity {
         ImageName = (EditText)findViewById(R.id.imgName);
         ImageCaption = (EditText)findViewById(R.id.imgCaption);
         FoundAt = (EditText)findViewById(R.id.FoundAt);
-
+        personEmail=getIntent().getStringExtra("personEmail");
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         btn = findViewById(R.id.button2);
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +143,7 @@ public class Main2Activity extends AppCompatActivity {
                     final String TempImageCaption = ImageCaption.getText().toString().trim();
                     final String TempFoundAt = FoundAt.getText().toString().trim();
                     ///////////////////////////////////
-                    final String user="hot hna l username aw email";
+                    final String user=personEmail;
                     ////////////////////////////////////////
                     filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override

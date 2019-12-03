@@ -5,21 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -198,6 +192,8 @@ private final String CHANNEL_ID="personal_notifications";
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.child("student").hasChild(personId)) {
                         // go to Feed
+                        goFeed(personEmail);
+
                     }
                     else {
                          goSignup(personGivenName,personFamilyName,personEmail,personId);
@@ -212,7 +208,7 @@ private final String CHANNEL_ID="personal_notifications";
     }
             public void goSignup(String personGivenName, String personFamilyName, String personEmail, String personId)
             {
-                Toast.makeText(this,"Gwa el intent",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this,"Gwa el intent",Toast.LENGTH_SHORT).show();
                     intent = new Intent(this,Phone.class);
 
                         intent.putExtra("personGivenName",personGivenName);
@@ -232,24 +228,28 @@ private final String CHANNEL_ID="personal_notifications";
          reff.child(String.valueOf(personId)).setValue(student);
     }
 
-public void goAdd(View view)
+public void goFeed(String personEmail)
 
 {
-    create();
-    NotificationCompat.Builder builder = new NotificationCompat.Builder(Login.this,CHANNEL_ID);
-       builder .setSmallIcon(R.drawable.ic_message);
-       builder .setContentTitle("New Notification");
-       builder.setContentText("Let's add an Image!");
-       builder .setAutoCancel(true);
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-    NotificationManagerCompat n = NotificationManagerCompat.from(this);
-    n.notify(001,builder.build());
-
+    notifyMe();
     Intent intent = new Intent(this,Main2Activity.class);
+    intent.putExtra("personEmail",personEmail);
     startActivity(intent);
 
 }
-private void create()
+public void notifyMe()
+{
+    create();
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(Login.this,CHANNEL_ID);
+    builder .setSmallIcon(R.drawable.ic_message);
+    builder .setContentTitle("New Notification");
+    builder.setContentText("Let's add an Image!");
+    builder .setAutoCancel(true);
+    builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    NotificationManagerCompat n = NotificationManagerCompat.from(this);
+    n.notify(001,builder.build());
+}
+    private void create()
 {
     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
     {
