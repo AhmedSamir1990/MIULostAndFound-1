@@ -1,6 +1,10 @@
 package com.example.miulostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,6 +24,7 @@ import java.util.List;
 public class imagesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
+    String personEmail;
 
     private ProgressBar mProgressCircle;
 
@@ -30,7 +35,7 @@ public class imagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_images);
-
+        personEmail=getIntent().getStringExtra("personEmail");
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -61,5 +66,27 @@ public class imagesActivity extends AppCompatActivity {
 //                mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater= getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    public void onclickfab(View view)
+    {
+        goAddImage(personEmail);
+    }
+    public void goAddImage(String personEmail)
+
+    {
+
+        Intent intent = new Intent(this,Main2Activity.class);
+        intent.putExtra("personEmail",personEmail);
+        startActivity(intent);
+
+
     }
 }

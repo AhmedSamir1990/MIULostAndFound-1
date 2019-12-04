@@ -50,22 +50,18 @@ public class Login extends AppCompatActivity {
     Intent intent;
 private final String CHANNEL_ID="personal_notifications";
     long maxid = 0;
-    GoogleSignInResult result;
-    DataSnapshot dataSnapshot;
+
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Configure Google Sign In
         googlesigninbtn = findViewById(R.id.signInButton);
         signOutbtn = findViewById(R.id.sign_out);
         textView3 = findViewById(R.id.textView3);
         button3 = findViewById(R.id.button3);
         textView4 = findViewById(R.id.textView4);
-//        textView7 = findViewById(R.id.textView7);
-
         student= new com.example.miulostandfound.student();
         reff = FirebaseDatabase.getInstance().getReference().child("student");
         reff.addValueEventListener(new ValueEventListener() {
@@ -79,6 +75,7 @@ private final String CHANNEL_ID="personal_notifications";
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -107,10 +104,9 @@ private final String CHANNEL_ID="personal_notifications";
             }
         });
 
-        signOut();
+//        signOut();
         signOutbtn.setVisibility(View.GONE);
 
-//        textView7.setVisibility(View.GONE);
     }
 
     private void signIn() {
@@ -127,7 +123,13 @@ private final String CHANNEL_ID="personal_notifications";
                     }
                 });
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,10 +176,7 @@ private final String CHANNEL_ID="personal_notifications";
 
     public void updateUI(FirebaseUser user) {
 
-        signOutbtn.setVisibility(View.VISIBLE);
-        googlesigninbtn.setVisibility(View.GONE);
-//        textView4.setVisibility(View.GONE);
-
+//        googlesigninbtn.setVisibility(View.GONE);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
             final String personName = acct.getDisplayName(); //full name
@@ -191,9 +190,7 @@ private final String CHANNEL_ID="personal_notifications";
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.child("student").hasChild(personId)) {
-                        // go to Feed
                         goFeed(personEmail);
-
                     }
                     else {
                          goSignup(personGivenName,personFamilyName,personEmail,personId);
@@ -202,15 +199,14 @@ private final String CHANNEL_ID="personal_notifications";
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {}
             });
-//            signUp(personGivenName, personFamilyName, personEmail, personId);
 
         }
     }
-            public void goSignup(String personGivenName, String personFamilyName, String personEmail, String personId)
-            {
-//                Toast.makeText(this,"Gwa el intent",Toast.LENGTH_SHORT).show();
-                    intent = new Intent(this,Phone.class);
 
+    public void goSignup(String personGivenName, String personFamilyName, String personEmail, String personId)
+            {
+
+                    intent = new Intent(this,Phone.class);
                         intent.putExtra("personGivenName",personGivenName);
                         intent.putExtra("personFamilyName",personFamilyName);
                         intent.putExtra("personEmail",personEmail);
@@ -228,15 +224,17 @@ private final String CHANNEL_ID="personal_notifications";
          reff.child(String.valueOf(personId)).setValue(student);
     }
 
-public void goFeed(String personEmail)
 
-{
-    notifyMe();
-    Intent intent = new Intent(this,Main2Activity.class);
-    intent.putExtra("personEmail",personEmail);
-    startActivity(intent);
 
-}
+    public void goFeed(String personEmail)
+    {
+        notifyMe();
+        Intent intent = new Intent(this,imagesActivity.class);
+        intent.putExtra("personEmail",personEmail);
+        startActivity(intent);
+        finish();
+    }
+
 public void notifyMe()
 {
     create();
