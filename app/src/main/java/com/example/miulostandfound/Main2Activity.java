@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +21,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +42,7 @@ import java.util.Calendar;
 public class Main2Activity extends AppCompatActivity {
     private static final int Pick_Photo = 1;
     private static final int Camera =2;
+    Login log = new Login();
 
     DatabaseReference databaseReference;
     Uri image;
@@ -46,12 +52,13 @@ public class Main2Activity extends AppCompatActivity {
     Button btn;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String personEmail;
-
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Image");
         storageReference = FirebaseStorage.getInstance().getReference().child("Image_File");
         ImageName = (EditText)findViewById(R.id.imgName);
@@ -216,5 +223,34 @@ public class Main2Activity extends AppCompatActivity {
         }
 //        return "";
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item1:
+                signOut();
+                return true;
+            case R.id.item2:
+                Toast.makeText(this,"About",Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+
+        Intent intent = new Intent(this,Login.class);
+        startActivity(intent);
+        log.signOut();
+//        mGoogleSignInClient.signOut()
+//                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                    }
+//                });
+
+    }
+
+
 }
 

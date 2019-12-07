@@ -27,12 +27,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent= PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder .setSmallIcon(R.drawable.ic_message);
+//        builder .setSmallIcon(R.drawable.ic_message);
         builder .setContentTitle(title);
         builder.setContentText(body);
-        builder .setAutoCancel(true);
+//        builder .setAutoCancel(true);
         builder.setContentIntent(pendingIntent);
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

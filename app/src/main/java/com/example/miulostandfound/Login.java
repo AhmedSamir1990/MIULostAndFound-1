@@ -115,7 +115,7 @@ private final String CHANNEL_ID="personal_notifications";
 
     }
 
-    private void signOut() {
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -239,8 +239,8 @@ public void notifyMe()
 {
     create();
     NotificationCompat.Builder builder = new NotificationCompat.Builder(Login.this,CHANNEL_ID);
-    builder .setSmallIcon(R.drawable.ic_message);
-    builder .setContentTitle("New Notification");
+    builder .setSmallIcon(R.drawable.miulogo);
+    builder .setContentTitle("Welcome To MIU Lost&Found");
     builder.setContentText("Let's add an Image!");
     builder .setAutoCancel(true);
     builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
