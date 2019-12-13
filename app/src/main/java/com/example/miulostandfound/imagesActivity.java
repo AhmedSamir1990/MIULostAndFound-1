@@ -62,6 +62,7 @@ public class imagesActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     imageData upload = postSnapshot.getValue(imageData.class);
+
                     mUploads.add(upload);
                 }
 

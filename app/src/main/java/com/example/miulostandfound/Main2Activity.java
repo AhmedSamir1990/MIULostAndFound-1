@@ -48,7 +48,7 @@ public class Main2Activity extends AppCompatActivity {
     Uri image;
     StorageReference storageReference;
     TextView mTextViewShowUploads;
-    EditText ImageName ,ImageCaption,FoundAt;
+    EditText imageName ,imageCaption,FoundAt;
     Button btn;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String personEmail;
@@ -61,8 +61,8 @@ public class Main2Activity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Image");
         storageReference = FirebaseStorage.getInstance().getReference().child("Image_File");
-        ImageName = (EditText)findViewById(R.id.imgName);
-        ImageCaption = (EditText)findViewById(R.id.imgCaption);
+        imageName = (EditText)findViewById(R.id.imgName);
+        imageCaption = (EditText)findViewById(R.id.imgCaption);
         FoundAt = (EditText)findViewById(R.id.FoundAt);
         personEmail=getIntent().getStringExtra("personEmail");
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
@@ -136,11 +136,27 @@ public class Main2Activity extends AppCompatActivity {
 
     public void UploadImage(View view) {
 
+        String imageName2 = imageName.getText().toString();
+        String imageCaption2 = imageCaption.getText().toString();
+        String FoundAt2 = FoundAt.getText().toString();
+        if (imageName2.isEmpty()) {
+            imageName.setError("Item Name is required");
+            imageName.requestFocus();
+            return;
+        } else if (imageCaption2.isEmpty()) {
+            imageCaption.setError("Item Descreption is required");
+            imageCaption.requestFocus();
+            return;
+        } else if (FoundAt2.isEmpty()) {
+            imageName.setError("Valid Number is required");
+            imageName.requestFocus();
+            return;
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, Pick_Photo);
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, Pick_Photo);
-
+        }
     }
 
 
@@ -155,8 +171,8 @@ public class Main2Activity extends AppCompatActivity {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    final String TempImageName = ImageName.getText().toString().trim();
-                    final String TempImageCaption = ImageCaption.getText().toString().trim();
+                    final String TempImageName = imageName.getText().toString().trim();
+                    final String TempImageCaption = imageCaption.getText().toString().trim();
                     final String TempFoundAt = FoundAt.getText().toString().trim();
                     ///////////////////////////////////
                     final String user=personEmail;
