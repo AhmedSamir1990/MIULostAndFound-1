@@ -11,26 +11,21 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginLeft="112dp"
-        android:layout_marginEnd="51dp"
-        android:layout_marginRight="51dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/buttonshape"
         android:onClick="UploadImage"
         android:text="Upload"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="@+id/status" />
 
     <EditText
         android:id="@+id/imgName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="37dp"
         android:hint="image name"
-        app:layout_constraintBottom_toTopOf="@+id/imgCaption"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,9 +34,8 @@
         android:id="@+id/imgCaption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="51dp"
+        android:layout_marginTop="36dp"
         android:hint="Image Caption"
-        app:layout_constraintBottom_toTopOf="@+id/FoundAt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgName" />
@@ -50,34 +44,77 @@
         android:id="@+id/text_view_show_uploads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="175dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="165dp"
         android:text="Show Uploads"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintEnd_toEndOf="@+id/button2" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
-        android:layout_marginBottom="75dp"
-        android:background="@drawable/ic_camera"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_show_uploads"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="73dp"
+        android:layout_marginBottom="71dp"
+        android:background="@android:drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_show_uploads"
         app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/FoundAt" />
+        app:layout_constraintTop_toBottomOf="@+id/status" />
 
     <EditText
         android:id="@+id/FoundAt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="155dp"
+        android:layout_marginTop="52dp"
         android:hint="Found At"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgCaption" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="14dp"
+        android:text="This is item is: "
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/status" />
+
+    <RadioGroup
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/FoundAt">
+
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Lost"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="314dp" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Found"
+            tools:layout_editor_absoluteX="149dp"
+            tools:layout_editor_absoluteY="348dp" />
+
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

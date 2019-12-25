@@ -83,7 +83,7 @@ public class Phone extends AppCompatActivity {
     public void goFeed(String personEmail)
 
     {
-        Intent intent = new Intent(this,Main2Activity.class);
+        Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("personEmail",personEmail);
         startActivity(intent);
 

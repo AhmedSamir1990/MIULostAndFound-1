@@ -16,4 +16,7 @@
     <string name="phone_number">Phone number</string>
     <string name="password_at_least_8_characters">Password (at least 8 characters)</string>
     <string name="re_type_your_password">Re-Type your password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

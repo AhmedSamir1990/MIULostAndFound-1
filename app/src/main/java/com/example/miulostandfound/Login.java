@@ -229,7 +229,7 @@ private final String CHANNEL_ID="personal_notifications";
     public void goFeed(String personEmail)
     {
         notifyMe();
-        Intent intent = new Intent(this,imagesActivity.class);
+        Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("personEmail",personEmail);
         startActivity(intent);
         finish();

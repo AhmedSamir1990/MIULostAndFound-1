@@ -41,7 +41,9 @@
         <activity
             android:name=".Login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+
+            />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

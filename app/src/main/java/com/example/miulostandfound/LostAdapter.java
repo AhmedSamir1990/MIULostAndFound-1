@@ -1,6 +1,4 @@
 package com.example.miulostandfound;
-
-
 import android.content.Context;
 import android.nfc.Tag;
 import android.util.Log;
@@ -20,24 +18,31 @@ import com.squareup.picasso.Picasso;
 import java.util.Iterator;
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+public class LostAdapter extends RecyclerView.Adapter<LostAdapter.ImageViewHolder> {
 
     private Context mContext;
     private List<imageData> mUploads;
     boolean flag = false;
     StorageReference storageReference;
-//    Iterator<DataSnapshot> items = databasetasna
 
 
-    public ImageAdapter(Context context, List<imageData> uploads) {
-        mContext = context;
-        mUploads = uploads;
+    public LostAdapter( List<imageData> uploads) {
+
+        this.mUploads = uploads;
     }
+
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.image_item, parent, false);
-        return new ImageViewHolder(v);
+
+//        View v = LayoutInflater.from(mContext).inflate(R.layout.image_item, parent, false);
+//        return new ImageViewHolder(v);
+
+        View view;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        view = inflater.inflate(R.layout.image_item,parent,false);
+        return new ImageViewHolder(view);
+
     }
 
     @Override
@@ -47,19 +52,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if (uploadCurrent.getIsFound()==flag)
         {
             holder.textViewName.setText(uploadCurrent.getImageName());
-//        hna kn fe with(mContext) bs at3'yrt '
-//        Picasso.get().load(uploadCurrent.getImageURL()).fit().centerCrop().into(holder.imageView);
             Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
             System.out.println(img);
             Log.i("Tag",img.toString());
-//        storageReference.child(img.child)
         }
         else
-//            holder.textViewName.setText("NO data to show ");
             System.out.println("No data to show");
-//        Log.i("Tag",img.toString());
-//    Toast.makeText(ImageAdapter.this,"No items to show",Toast.LENGTH_LONG).show();
-//        Toast.makeText(ImageAdapter.this, "Done", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -68,7 +66,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public int getItemCount() {
         return mUploads.size();
     }
-
 
 
     public class ImageViewHolder extends RecyclerView.ViewHolder{

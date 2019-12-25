@@ -128,7 +128,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     private void openImagesActivity() {
-        Intent intent = new Intent(this,imagesActivity.class);
+        Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
 //        finish();
     }
@@ -148,8 +148,8 @@ public class Main2Activity extends AppCompatActivity {
             imageCaption.requestFocus();
             return;
         } else if (FoundAt2.isEmpty()) {
-            imageName.setError("Valid Number is required");
-            imageName.requestFocus();
+            FoundAt.setError("Valid room is required");
+            FoundAt.requestFocus();
             return;
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -205,9 +205,8 @@ public class Main2Activity extends AppCompatActivity {
         }
         else if (requestCode == 2) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//            imageview.setImageBitmap(thumbnail);
             saveImage(thumbnail);
-            Toast.makeText(Main2Activity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Main2Activity.this, "Image Saved!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -258,12 +257,7 @@ public class Main2Activity extends AppCompatActivity {
         Intent intent = new Intent(this,Login.class);
         startActivity(intent);
         log.signOut();
-//        mGoogleSignInClient.signOut()
-//                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                    }
-//                });
+
 
     }
 
