@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -49,7 +51,10 @@ public class Main2Activity extends AppCompatActivity {
     StorageReference storageReference;
     TextView mTextViewShowUploads;
     EditText imageName ,imageCaption,FoundAt;
+    RadioButton radiolost;
+    RadioButton radiofound;
     Button btn;
+    boolean itemfound;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String personEmail;
     GoogleSignInClient mGoogleSignInClient;
@@ -67,6 +72,8 @@ public class Main2Activity extends AppCompatActivity {
         personEmail=getIntent().getStringExtra("personEmail");
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         btn = findViewById(R.id.button2);
+        radiofound=findViewById(R.id.found);
+        radiolost=findViewById(R.id.lost);
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,17 +140,37 @@ public class Main2Activity extends AppCompatActivity {
 //        finish();
     }
 
-
+//    public void onRadioButtonClicked(View view) {
+//        // Is the button now checked?
+//        boolean checked = ((RadioButton) view).isChecked();
+//
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.found:
+//                if (checked)
+//                    itemfound=true;
+//                    break;
+//            case R.id.lost:
+//                if (checked)
+//                    itemfound=false;
+//
+//                break;
+//        }
+//    }
     public void UploadImage(View view) {
 
         String imageName2 = imageName.getText().toString();
         String imageCaption2 = imageCaption.getText().toString();
         String FoundAt2 = FoundAt.getText().toString();
+
+
         if (imageName2.isEmpty()) {
             imageName.setError("Item Name is required");
             imageName.requestFocus();
             return;
-        } else if (imageCaption2.isEmpty()) {
+        }
+
+            else if (imageCaption2.isEmpty()) {
             imageCaption.setError("Item Descreption is required");
             imageCaption.requestFocus();
             return;
@@ -151,7 +178,18 @@ public class Main2Activity extends AppCompatActivity {
             FoundAt.setError("Valid room is required");
             FoundAt.requestFocus();
             return;
-        } else {
+        }
+
+            else {
+            if (radiofound.isChecked())
+                itemfound=true;
+            else if (radiolost.isChecked())
+                itemfound=false;
+            else {
+                    Toast.makeText(this, "please select item status", Toast.LENGTH_LONG).show();
+                    return;
+                 }
+
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, Pick_Photo);
@@ -174,22 +212,16 @@ public class Main2Activity extends AppCompatActivity {
                     final String TempImageName = imageName.getText().toString().trim();
                     final String TempImageCaption = imageCaption.getText().toString().trim();
                     final String TempFoundAt = FoundAt.getText().toString().trim();
-                    ///////////////////////////////////
                     final String user=personEmail;
-                    ////////////////////////////////////////
+                    // find the radiobutton by returned id
                     filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-//                            URL[0] =String.valueOf(uri);
 
-                            // imageData imageData= new  imageData(TempImageName, String.valueOf(uri), TempImageCaption,  false, TempFoundAt,user);
-                            imageData imageData = new imageData(TempImageName,String.valueOf(uri),TempImageCaption,false,TempFoundAt,user);
-
+                            imageData imageData = new imageData(TempImageName,String.valueOf(uri),TempImageCaption,itemfound ,TempFoundAt,user);
                             String ImageUploadId = databaseReference.push().getKey();
-
                             databaseReference.child(ImageUploadId).setValue(imageData);
-
-                            Toast.makeText(Main2Activity.this, "Done"+uri, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Main2Activity.this, "Done", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
