@@ -1,7 +1,9 @@
 package com.example.miulostandfound;
 
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.text.style.UpdateLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +13,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +36,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     ArrayList<String> keys;
     private Context mContext;
     private List<imageData> mUploads;
+    boolean del=false;
     boolean flag = false;
+    static PostAdapter instance;
+    MainActivity m=MainActivity.instance;
     StorageReference storageReference;
     public interface OnItemLongClickListener {
         public boolean onItemLongClicked(int position);
@@ -33,8 +48,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public PostAdapter( List<imageData> uploads,ArrayList<String> k) {
 
         this.mUploads = uploads;
+        instance=this;
         keys=k;
     }
+    public PostAdapter(){}
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,9 +76,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteItem(position);
+                m.openDialog(position);
+//                deleteItem(position);
             }
         });
+
+
     }
 
     @Override
@@ -92,5 +112,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             imageView = itemView.findViewById(R.id.image_view_upload);
             deleteButton=itemView.findViewById(R.id.btnDel);
         }
+    }
+
+
+
+    public void setDel(boolean del) {
+        this.del = del;
     }
 }

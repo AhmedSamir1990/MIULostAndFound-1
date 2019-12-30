@@ -55,7 +55,6 @@ public class Login extends AppCompatActivity {
 private final String CHANNEL_ID="personal_notifications";
     long maxid = 0;
 
-
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,13 +126,11 @@ private final String CHANNEL_ID="personal_notifications";
             backButtonCount++;
         }
     }
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
-
     public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -155,7 +152,7 @@ private final String CHANNEL_ID="personal_notifications";
 
         googlesigninbtn.setVisibility(View.GONE);
         try {
-            sleep(1000);
+            sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -176,7 +173,6 @@ private final String CHANNEL_ID="personal_notifications";
             }
         }
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -201,7 +197,6 @@ private final String CHANNEL_ID="personal_notifications";
                     }
                 });
     }
-
     public void updateUI(FirebaseUser user) {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
@@ -228,7 +223,6 @@ private final String CHANNEL_ID="personal_notifications";
 
         }
     }
-
     public void goSignup(String personGivenName, String personFamilyName, String personEmail, String personId)
             {
 
@@ -240,7 +234,6 @@ private final String CHANNEL_ID="personal_notifications";
                     startActivity(intent);
                     finish();
             }
-
     private void signUp(String personGivenName, String personFamilyName, String personEmail, String personId) {
         student.setFName(personGivenName.toString().trim());
         student.setLName(personFamilyName.toString().trim());
@@ -249,9 +242,6 @@ private final String CHANNEL_ID="personal_notifications";
 //        student.setNumber(personPhone.trim());
          reff.child(String.valueOf(personId)).setValue(student);
     }
-
-
-
     public void goFeed(String personEmail)
     {
         notifyMe();
@@ -260,7 +250,6 @@ private final String CHANNEL_ID="personal_notifications";
         startActivity(intent);
         finish();
     }
-
 public void notifyMe()
 {
     create();
@@ -287,4 +276,5 @@ public void notifyMe()
         no.createNotificationChannel(notificationChannel);
     }
 }
+
 }

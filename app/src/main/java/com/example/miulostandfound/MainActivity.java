@@ -33,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         String personEmail;
         Button fab;
         int backButtonCount=0;
+    static MainActivity instance;
+        PostAdapter p;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-
+            instance = this;
             personEmail=getIntent().getStringExtra("personEmail");
             tabLayout = findViewById(R.id.tablayout);
             tabChats = findViewById(R.id.tabChats);
@@ -150,7 +152,11 @@ public class MainActivity extends AppCompatActivity {
             backButtonCount++;
         }
     }
-
+    public void openDialog(int position) {
+        DialogBox Dialog = new DialogBox();
+        Dialog.show(getSupportFragmentManager(),"Dialog");
+        Dialog.setPosition(position);
+    }
 }
 
 

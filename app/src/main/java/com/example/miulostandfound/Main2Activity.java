@@ -244,7 +244,6 @@ public class Main2Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 //        Toast.makeText(this," OnActivity mn bara",Toast.LENGTH_SHORT).show();
         if (requestCode == Pick_Photo && resultCode == RESULT_OK) {
-            Toast.makeText(this," OnActivity if",Toast.LENGTH_SHORT).show();
             final Uri uri = data.getData();
             //this is for image file name
             final StorageReference filepath = storageReference.child("Photos").child(String.valueOf(System.currentTimeMillis()));
@@ -263,7 +262,7 @@ public class Main2Activity extends AppCompatActivity {
                             imageData imageData = new imageData(TempImageName,String.valueOf(uri),TempImageCaption,itemfound ,TempFoundAt,user);
                             String ImageUploadId = databaseReference.push().getKey();
                             databaseReference.child(ImageUploadId).setValue(imageData);
-                            Toast.makeText(Main2Activity.this, "Done", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Main2Activity.this, "Post Added Successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -281,7 +280,6 @@ public class Main2Activity extends AppCompatActivity {
         else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
 
             Uri uri =  galleryAddPic();
-            //this is for image file name
             final StorageReference filepath = storageReference.child("Photos").child(String.valueOf(System.currentTimeMillis()));
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
