@@ -4,13 +4,17 @@
     package="com.example.miulostandfound">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
 
 
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
 
         android:resource="@drawable/images" />
+
+    
 
     <application
         android:allowBackup="true"
@@ -20,6 +24,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
         <service
             android:name=".GettingDeviceTokenService">
             <intent-filter>
@@ -37,13 +53,13 @@
         <activity android:name=".imagesActivity" />
         <activity android:name=".imageData" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".Phone" />
+        <activity android:name=".Phone" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity"
-
-            />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".resultActivity" />
+        <activity android:name=".searchActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

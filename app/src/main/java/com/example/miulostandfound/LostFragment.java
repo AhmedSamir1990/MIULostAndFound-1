@@ -1,5 +1,6 @@
 package com.example.miulostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,7 @@ public class LostFragment extends Fragment  implements View.OnClickListener{
     FloatingActionButton fab;
     private DatabaseReference mDatabaseRef;
     private List<imageData> mUploads;
+    int backButtonCount=0;
 
     public LostFragment() {
         // Required empty public constructor
@@ -85,8 +87,10 @@ public class LostFragment extends Fragment  implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.fab:
                 ((MainActivity)getActivity()).onclickfab();
+
                 break;
 
         }
     }
+
 }

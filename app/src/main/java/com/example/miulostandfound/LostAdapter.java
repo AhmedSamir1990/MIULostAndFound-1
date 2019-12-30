@@ -52,6 +52,9 @@ public class LostAdapter extends RecyclerView.Adapter<LostAdapter.ImageViewHolde
         if (uploadCurrent.getIsFound()==flag)
         {
             holder.textViewName.setText(uploadCurrent.getImageName());
+            holder.textViewCaption.setText(uploadCurrent.getImageCaption());
+            holder.textViewFoundat.setText(uploadCurrent.getFoundAt());
+            holder.textViewPostedby.setText(uploadCurrent.getUser());
             Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
             System.out.println(img);
             Log.i("Tag",img.toString());
@@ -70,10 +73,16 @@ public class LostAdapter extends RecyclerView.Adapter<LostAdapter.ImageViewHolde
 
     public class ImageViewHolder extends RecyclerView.ViewHolder{
         public TextView textViewName;
+        public TextView textViewCaption;
+        public TextView textViewFoundat;
+        public TextView textViewPostedby;
         public ImageView imageView;
         public ImageViewHolder(View itemView){
             super(itemView);
             textViewName = itemView.findViewById(R.id.text_view_name);
+            textViewCaption = itemView.findViewById(R.id.textView7);
+            textViewFoundat = itemView.findViewById(R.id.textView8);
+            textViewPostedby = itemView.findViewById(R.id.User_email);
             imageView = itemView.findViewById(R.id.image_view_upload);
 
 

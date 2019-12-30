@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
     int RC_SIGN_IN = 1;
+    int backButtonCount=0;
     String TAG = "Google sign in";
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
@@ -55,6 +57,7 @@ private final String CHANNEL_ID="personal_notifications";
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         googlesigninbtn = findViewById(R.id.signInButton);
@@ -90,9 +93,6 @@ private final String CHANNEL_ID="personal_notifications";
                 signIn();
             }
         });
-        {
-
-        }
 
 
         signOutbtn.setOnClickListener(new View.OnClickListener() {
@@ -104,9 +104,30 @@ private final String CHANNEL_ID="personal_notifications";
             }
         });
 
-//        signOut();
+        signOut();
         signOutbtn.setVisibility(View.GONE);
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+//        super.onBackPressed();
+//        startActivity(new Intent(Login.this, Login.class));
+//        finish();
+
+
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
     }
 
     private void signIn() {
@@ -134,17 +155,19 @@ private final String CHANNEL_ID="personal_notifications";
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        googlesigninbtn.setVisibility(View.GONE);
+//        signOutbtn.setVisibility(View.VISIBLE);
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
-                // ...
+
             }
         }
     }
@@ -175,8 +198,6 @@ private final String CHANNEL_ID="personal_notifications";
     }
 
     public void updateUI(FirebaseUser user) {
-
-//        googlesigninbtn.setVisibility(View.GONE);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
             final String personName = acct.getDisplayName(); //full name

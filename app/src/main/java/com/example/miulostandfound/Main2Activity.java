@@ -9,6 +9,8 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,13 +42,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import static java.lang.Thread.sleep;
 
 public class Main2Activity extends AppCompatActivity {
-    private static final int Pick_Photo = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String currentPhotoPath;
+
+
+    private static final int Pick_Photo = 2;
     private static final int Camera =2;
     Login log = new Login();
-
     DatabaseReference databaseReference;
     Uri image;
     StorageReference storageReference;
@@ -55,15 +65,18 @@ public class Main2Activity extends AppCompatActivity {
     RadioButton radiofound;
     Button btn;
     boolean itemfound;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
     String personEmail;
     GoogleSignInClient mGoogleSignInClient;
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Image");
         storageReference = FirebaseStorage.getInstance().getReference().child("Image_File");
         imageName = (EditText)findViewById(R.id.imgName);
@@ -81,10 +94,18 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showPictureDialog();
+//            }
+//        });
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPictureDialog();
+
+                captureImage();
+
             }
         });
 
@@ -140,23 +161,6 @@ public class Main2Activity extends AppCompatActivity {
 //        finish();
     }
 
-//    public void onRadioButtonClicked(View view) {
-//        // Is the button now checked?
-//        boolean checked = ((RadioButton) view).isChecked();
-//
-//        // Check which radio button was clicked
-//        switch(view.getId()) {
-//            case R.id.found:
-//                if (checked)
-//                    itemfound=true;
-//                    break;
-//            case R.id.lost:
-//                if (checked)
-//                    itemfound=false;
-//
-//                break;
-//        }
-//    }
     public void UploadImage(View view) {
 
         String imageName2 = imageName.getText().toString();
@@ -170,7 +174,7 @@ public class Main2Activity extends AppCompatActivity {
             return;
         }
 
-            else if (imageCaption2.isEmpty()) {
+        else if (imageCaption2.isEmpty()) {
             imageCaption.setError("Item Descreption is required");
             imageCaption.requestFocus();
             return;
@@ -180,15 +184,15 @@ public class Main2Activity extends AppCompatActivity {
             return;
         }
 
-            else {
+        else {
             if (radiofound.isChecked())
                 itemfound=true;
             else if (radiolost.isChecked())
                 itemfound=false;
             else {
-                    Toast.makeText(this, "please select item status", Toast.LENGTH_LONG).show();
-                    return;
-                 }
+                Toast.makeText(this, "please select item status", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
@@ -197,12 +201,50 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
+    public void captureImage(){ String imageName2 = imageName.getText().toString();
+        String imageCaption2 = imageCaption.getText().toString();
+        String FoundAt2 = FoundAt.getText().toString();
+
+
+        if (imageName2.isEmpty()) {
+            imageName.setError("Item Name is required");
+            imageName.requestFocus();
+            return;
+        }
+
+        else if (imageCaption2.isEmpty()) {
+            imageCaption.setError("Item Descreption is required");
+            imageCaption.requestFocus();
+            return;
+        } else if (FoundAt2.isEmpty()) {
+            FoundAt.setError("Valid room is required");
+            FoundAt.requestFocus();
+            return;
+        }
+
+        else {
+            if (radiofound.isChecked())
+                itemfound=true;
+            else if (radiolost.isChecked())
+                itemfound=false;
+            else {
+                Toast.makeText(this, "please select item status", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            dispatchTakePictureIntent();
+
+
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+//        Toast.makeText(this," OnActivity mn bara",Toast.LENGTH_SHORT).show();
         if (requestCode == Pick_Photo && resultCode == RESULT_OK) {
-
+            Toast.makeText(this," OnActivity if",Toast.LENGTH_SHORT).show();
             final Uri uri = data.getData();
             //this is for image file name
             final StorageReference filepath = storageReference.child("Photos").child(String.valueOf(System.currentTimeMillis()));
@@ -235,12 +277,46 @@ public class Main2Activity extends AppCompatActivity {
                 }
             });
         }
-        else if (requestCode == 2) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            saveImage(thumbnail);
-            Toast.makeText(Main2Activity.this, "Image Saved!", Toast.LENGTH_LONG).show();
+
+        else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+
+            Uri uri =  galleryAddPic();
+            //this is for image file name
+            final StorageReference filepath = storageReference.child("Photos").child(String.valueOf(System.currentTimeMillis()));
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    final String TempImageName = imageName.getText().toString().trim();
+                    final String TempImageCaption = imageCaption.getText().toString().trim();
+                    final String TempFoundAt = FoundAt.getText().toString().trim();
+                    final String user=personEmail;
+                    // find the radiobutton by returned id
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            imageData imageData = new imageData(TempImageName,String.valueOf(uri),TempImageCaption,itemfound ,TempFoundAt,user);
+                            String ImageUploadId = databaseReference.push().getKey();
+                            databaseReference.child(ImageUploadId).setValue(imageData);
+                            Toast.makeText(Main2Activity.this, "Post Added Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    // Hiding the progressDialog.
+                    // Showing exception erro message.
+                    Toast.makeText(Main2Activity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
+
+
     }
+
 
     private void saveImage(Bitmap myBitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -280,17 +356,68 @@ public class Main2Activity extends AppCompatActivity {
             case R.id.item2:
                 Toast.makeText(this,"About",Toast.LENGTH_SHORT).show();
                 return true;
+
+            case R.id.item3:
+                Toast.makeText(this,"Search",Toast.LENGTH_LONG).show();
+                gosearch();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
     private void signOut() {
-
         Intent intent = new Intent(this,Login.class);
         startActivity(intent);
-        log.signOut();
+    }
+    void gosearch() {
+
+        Intent intent = new Intent(Main2Activity.this, searchActivity.class);
+        startActivity(intent);
+    }
 
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    private Uri galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+        return contentUri;
     }
 
 
