@@ -24,10 +24,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     ArrayList<String> keys;
     private Context mContext;
     private List<imageData> mUploads;
-
     boolean flag = false;
     StorageReference storageReference;
-
     public interface OnItemLongClickListener {
         public boolean onItemLongClicked(int position);
     }
@@ -50,8 +48,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         imageData uploadCurrent = mUploads.get(position);
         String img = String.valueOf(uploadCurrent.getImageURL());
         holder.textViewCaption.setText(uploadCurrent.getImageCaption());
-        holder.textViewFoundat.setText(uploadCurrent.getFoundAt());
-        holder.textViewPostedby.setText(uploadCurrent.getUser());
+        holder.textViewFoundat.setText("Found At: "+uploadCurrent.getFoundAt());
+        holder.textViewPostedby.setText("Posted By: "+uploadCurrent.getUser());
             holder.textViewName.setText(uploadCurrent.getImageName());
             Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
             System.out.println(img);
@@ -81,7 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public class ImageViewHolder extends RecyclerView.ViewHolder{
         TextView textViewName;
         ImageView imageView;
-        ImageView deleteButton;
+        Button deleteButton;
         TextView textViewCaption;
         TextView textViewFoundat;
         TextView textViewPostedby;

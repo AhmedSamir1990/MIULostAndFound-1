@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static java.lang.Thread.sleep;
+
 public class Login extends AppCompatActivity {
     int RC_SIGN_IN = 1;
     int backButtonCount=0;
@@ -101,6 +103,7 @@ private final String CHANNEL_ID="personal_notifications";
                 signOut();
                 googlesigninbtn.setVisibility(View.VISIBLE);
                 signOutbtn.setVisibility(View.GONE);
+                textView4.setText("Please Wait A Moment");
             }
         });
 
@@ -111,11 +114,6 @@ private final String CHANNEL_ID="personal_notifications";
     @Override
     public void onBackPressed()
     {
-//        super.onBackPressed();
-//        startActivity(new Intent(Login.this, Login.class));
-//        finish();
-
-
         if(backButtonCount >= 1)
         {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -156,6 +154,13 @@ private final String CHANNEL_ID="personal_notifications";
         super.onActivityResult(requestCode, resultCode, data);
 
         googlesigninbtn.setVisibility(View.GONE);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        textView3.setText("Loading");
+        textView4.setText("Please Wait A Moment");
 //        signOutbtn.setVisibility(View.VISIBLE);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
